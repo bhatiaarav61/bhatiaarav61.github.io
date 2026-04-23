@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Calc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f2f4f7;
+            --calc-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #8e8e93;
+            --btn-number: #f8f9fa;
+            --btn-operator: #eef2ff;
+            --btn-special: #fff0f3;
+            --accent-color: #4f46e5;
+            --accent-text: #ffffff;
+            --shadow: 0 20px 50px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* Header Styling */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .logo-icon {
+            background: var(--accent-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        nav a.active {
+            color: var(--accent-color);
+        }
+
+        /* Main Layout */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Calculator Card */
+        .calculator {
+            background: var(--calc-bg);
+            width: 360px;
+            padding: 30px;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        .display {
+            text-align: right;
+            font-size: 4rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            padding: 0 10px;
+            overflow: hidden;
+            height: 80px;
+        }
+
+        /* Buttons Grid */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        button {
+            border: none;
+            outline: none;
+            height: 65px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            filter: brightness(0.9);
+        }
+
+        .btn-number {
+            background-color: var(--btn-number);
+        }
+
+        .btn-operator {
+            background-color: var(--btn-operator);
+            color: var(--accent-color);
+        }
+
+        .btn-special {
+            background-color: var(--btn-special);
+            color: #ff4d6d;
+        }
+
+        .btn-equal {
+            background-color: var(--accent-color);
+            color: var(--accent-text);
+            grid-column: span 1;
+        }
+
+        /* Footer Styling */
+        footer {
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .footer-left {
+            max-width: 250px;
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">Σ</div>
+            Lumina Calc
+        </div>
+        <nav>
+            <a href="#" class="active">Scientific</a>
+            <a href="#">Financial</a>
+            <a href="#">History</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="calculator">
+            <div class="display" id="display">0</div>
+            <div class="keypad">
+                <!-- Row 1 -->
+                <button class="btn-special" onclick="clearDisplay()">AC</button>
+                <button class="btn-special" onclick="deleteLast()">⌫</button>
+                <button class="btn-special" onclick="appendOperator('%')">%</button>
+                <button class="btn-operator" onclick="appendOperator('÷')">÷</button>
+                
+                <!-- Row 2 -->
+                <button class="btn-number" onclick="appendNumber('7')">7</button>
+                <button class="btn-number" onclick="appendNumber('8')">8</button>
+                <button class="btn-number" onclick="appendNumber('9')">9</button>
+                <button class="btn-operator" onclick="appendOperator('×')">×</button>
+                
+                <!-- Row 3 -->
+                <button class="btn-number" onclick="appendNumber('4')">4</button>
+                <button class="btn-number" onclick="appendNumber('5')">5</button>
+                <button class="btn-number" onclick="appendNumber('6')">6</button>
+                <button class="btn-operator" onclick="appendOperator('-')">−</button>
+                
+                <!-- Row 4 -->
+                <button class="btn-number" onclick="appendNumber('1')">1</button>
+                <button class="btn-number" onclick="appendNumber('2')">2</button>
+                <button class="btn-number" onclick="appendNumber('3')">3</button>
+                <button class="btn-operator" onclick="appendOperator('+')">+</button>
+                
+                <!-- Row 5 -->
+                <button class="btn-number" style="grid-column: span 2; border-radius: 20px;" onclick="appendNumber('0')">0</button>
+                <button class="btn-number" onclick="appendNumber('.')">.</button>
+                <button class="btn-equal" onclick="calculate()">=</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-left">
+            Clean precision tools for high-fidelity calculations. Designed for professional workflows on any screen.
+        </div>
+        <div class="footer-right">
+            DEVICE ACCESS SYNC<br>
+            <span class="status-dot"></span> Cloud Workspace Active
+        </div>
+    </footer>
+
+    <script>
+        let currentInput = '0';
+        let previousInput = '';
+        let operator = null;
+        let shouldResetScreen = false;
+
+        const displayElement = document.getElementById('display');
+
+        function updateDisplay() {
+            displayElement.innerText = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' || shouldResetScreen) {
+                currentInput = number;
+                shouldResetScreen = false;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (operator !== null) calculate();
+            previousInput = currentInput;
+            operator = op;
+            shouldResetScreen = true;
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            previousInput = '';
+            operator = null;
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (operator === null || shouldResetScreen) return;
+            
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+': result = prev + current; break;
+                case '-': result = prev - current; break;
+                case '×': result = prev * current; break;
+                case '÷': result = prev / current; break;
+                case '%': result = prev % current; break;
+                default: return;
+            }
+
+            currentInput = result.toString();
+            operator = null;
+            shouldResetScreen = true;
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
